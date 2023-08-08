@@ -1,0 +1,42 @@
+# A crash course in GNSS
+
+This chapter is supposed to help you achieve the minimum necessary background to use the guide. I am not a geodesy expert and I don't think I need to duplicate material available elsewhere, so I will moslty link to good explanations and videos in here. 
+
+## Why "GNSS" and not "GPS"?
+
+Most people use the term "GPS data" when talking about position data obtained in the field. This is because in the past there was only one satellite navigation system, the Global Positioning System, or GPS, operated by the United States of America. Nowadays we have multiple satellite systems, and thus the correct term for the type of positionign system is 'Global Navigation Satellite System', or GNSS. GPS is therefore one of several GNSSs, along with GLONASS (Russia), Galileo (EU) and BeiDou (China). 
+
+[Wikipedia Article on GNSS.](https://en.wikipedia.org/wiki/Satellite_navigation)
+
+[A good video series about GNSS](https://www.youtube.com/playlist?list=PLDQ4NEkkthCuL7EidTgvK9Jn_ABefye1Y)
+
+[Intro book to GNSS]()
+
+## RTK, PPK, PPP, etc.
+
+To achieve high precision location data, you need at least two GNSS receivers. One will remain static, and will be called the 'Base'. The other will move from one point of interest to the next, and will be called 'Rover'. There are no actual differences between Base and Rover receivers - any survey-grade GNSS receiver can be set to either mode. Nor does ther Rover need to be always moving -  most of the time you will leave it in place for a certain **occupation time** to ensure you can get accurate data. The easiest way to not get confused is to think of the 'Base' as the source of corrections, and the 'Rover' as the receiver whose positions are being corrected. 
+
+Using two receivers improves accuracy because since the Base is static (i.e. doesn't move), we can assume that any variation in its calculated position over time are errors (watch the videos above for details on sources of error). We can then assume that the same error will be present in the rover data, and use the Base data as a reference to correct the Rover data. For this to work, it is important that:
+
+1) The Base and Rover are both receiving GNSS data at the same time.
+2) The distance between the Base and Rover (the *baseline*) is not too large. The closer they are, the more accurate the corrections. A rule of thumb is that the baseline should be less than 20km, but you certainly want it to be less than that for maximum accuracy.
+
+The terms RTK and PPK refer to 'Real-Time Kinematic' and 'Post-Processed Kinematic', and indicate how the corrections are applied (kinematic means in motion, since the Rover is assumed to be moving). In RTK, the Base and Rover will communicate in real-time, via radio, 4G or similar method, and thus the data received by the Rover is immediately corrected. This method has the advantage of giving you 'ready to use' coordinates without the need for any extra work back in the office. On the other hand, PPK processing will apply the corrections after the data is taken, after downloading the raw data to your computer. The advantage of PPK is that you can use data recorded from very precise ground stations (either public or private) that do not transmit data in real time, and also vary processing parameters (if you know what you're doing) to improve the results. The mathematics behind the corrections, however, is the same for PPK and RTK. 
+
+PPP, on the other hand, means Precise Point Positioning, and it is a method to process the Rover data using a network of very precise virtual Base Stations covering the globe. PPP is often used to establish **very** precise reference locations for surveying, but it requires that the Rover stays on the same position (static) for several hours. PPP processing is usually done using online services. To know more, see [here](https://gssc.esa.int/navipedia/index.php/Precise_Point_Positioning).
+
+## A precise *location* **DOES NOT** mean a precise *coordinate*!
+
+This is a common source of confusion when using RTK/PPK GNSS receivers. The positions you obtain from the Rover will always be very accurate in relation to the phisical location of the Base, since baselines will be very short. But this is **relative accuracy** - any error in the geographic coordinates assigned to the Base will also be present in all Rover coordinates. To obtain **absolute accuracy**, meaning a very accurate position in relation to a geographic Coordinate Reference System (lat/long, utm, OSBG, state plane, etc.), you need to know the exact coordinates of the Base position **BEFORE** you start logging! Yes, this sounds like a chiken and egg problem, but there are ways to deal with it. 
+
+To avoid confusion, pay attention to the terms used in the discussion below: A *Reference Station* is a GNSS receiving station that is not operated by you, but by a third-party (ae.g. a government agency, a commercial service). These stations have their geographic coordinates determined to a very high degree of precision, and never move. The GNSS data they receive can be obtained by downloading raw GNSS logs or in real-time via 4G or internet. The *Base* and *Rover* are your own receivers, which you will be placing in the field to record positions. That said, here are the alternatives for obtaining accurate *absolute* postition using GNSS:
+
+1) Correct your Rover using data from a third-party Reference Station: there are many public, commercial and community operated Reference Station Networks in the world, with availability varying from country to country. Some public examples are the RBMC in Brazil, OS-NET in the UK and CORS in the USA. Most often you will need to download the data from these networks and apply PPK corrections after logging youd data in the field. But several commercial  providers exist that will transmit RTK data from their own Referenve Network via cellular system (4G) or internet. There are also some community based RTK networks that provide free RTK transmission, such as [RTK2GO](http://rtk2go.com/). When transmiting data in real time, pretty much all services will use a data format called [NTRIP](https://igs.bkg.bund.de/ntrip/#:~:text=Ntrip%20is%20an%20RTCM%20standard,connections%20to%20a%20broadcasting%20host), so a good way to find out which options are available for your survey location is to search the internet for "NTRIP data for xxxxx", where xxxxx is the country where you will be using your Rover. The main advantage of this approach is that you don't need to carry, or even own, two GNSS receivers. The drawback is that accuracy will degrade as the baseline increases, so you need to ensure there are Reference Stations close enough to your survey site.  
+
+2) A way to improve position accuracy in relation to the method above is to first PPK your Base data using the Reference Station, to establish more accurate coordinates for the base position. As your Base stays static and logging for the entire duration of the survey, you will have a much larger set of PPK solutions from which to pick the most accurate results. You can then PPK your Rover data using the Base data as you normally would, bus with the updated and improved Base coordinates. As accuracy depends on the baseline between Base and Rover and on the accuracy of the known Base location, you get the best of both worlds: an accurate estimate of your Base position and a very short baseline between your Base and your Rover.    
+
+3) Place your Base at an existing survey marker: many countries have physical survey markers distributed along their territory. These markers are placed with high accuracy, and so you can use their reported coordinates as the true position of the Base. More useful when surveying urban areas. 
+
+4) Establish a reference position yourself. You can do that by using PPP and installing a permanent or temporary survey marker on your survey site. You will then always set the base on top of this marker, and use the marker coordinates as starting Base poasition. This is a good option if you will be surveying the same location for longer periods and/or at multiple occasions.  
+
+

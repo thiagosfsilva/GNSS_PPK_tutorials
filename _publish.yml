@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: ae24cb11-7780-43a8-92f5-0deff7e2482d
+      url: 'https://thiagosfsilva.quarto.pub/gnss_ppk_tutorials'

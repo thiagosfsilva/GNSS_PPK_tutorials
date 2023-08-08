@@ -1,0 +1,37 @@
+# Obtaining base station data from the Brazilian RBMC
+
+RBMC stands for Rede Brasileira de Monitoramento Geodésico (Brazilian Network for Geodesic Monitoring). This network is operated by the Instituto Brasileiro de Geografia e Estatística (IBGE, Brazilian Institute for Geography and Statistics), the federal body that provides official cartography systems and procedures for Brazil. The RBMC provides,a mong other things, daily records of precisely located GNSS base stations acorss the country, which can be used to post-process GNSS data obtained in the field. 
+
+The data is available at:
+
+- Map of GNSS stations and names: http://www.bdg.ibge.gov.br/appbdg/
+- GNSS files:  https://www.ibge.gov.br/en/geosciences/geodetic-positioning/geodetic-networks/19213-brazilian-network-for-continuous-monitoring-of-the-gnss-systems.html?=&t=downloads
+
+To download data, first identify the closest station to where the data was acquired. In this case, we will use as example the station located in Tefé, AM. In the interactive map, we make sure the RBMC layer is active, and then find the station by dragging and zooming the map. The stations will also be listed on the left (@fig-map)
+
+![Example of visualizing information about the AMTE RBMC station in Tefé, AM, Brazil.](./image/amte_rbmc_location_example.png){#fig-map}
+
+In our example, the station is named AMTE (AM as the letter code for the state of Amazonas, and TE as the initials of the location, the town of Tefé). Knowing the station name, we can then download the observation data from the second link above. The data is given as both RINEX 2 and RINEX 3 versions. I have ahd better success using the RINEX version 2 files, although they require some extra processing. They are available under the `data` folder, and then organised by year and day of the year. For example, for observations from November 1st, 2022 (or 2022-11-01 - **always** use the [ISO8601 date format](https://en.wikipedia.org/wiki/ISO_8601) when working and/or writing scientifically). The corresponding day of the year is 305, so we navigate to ther folder `/dados/2022/305`, and look for the file named `AMTE3051.zip`.
+
+::: {#fig-rbmcdata layout-ncol=2}
+
+![Year and day of the year folder structure](./image/rinex2_rbmc1.png){#fig-rbmc1}
+
+![GNSS files named by station](./image/rinex2_rbmc2.png){#fig-rbmc2}
+
+Downloading RINEX 2 GNSS data from the RBMC.
+:::
+
+We then have to extract the zipfile contents, which will yield us a set of four files:
+
+- `amte3051.22d`: The actual GNSS observations, compressed in the [Hatanaka](https://www.unavco.org/data/gps-gnss/hatanaka/hatanaka.html) format.
+- `amte3051.22n`: Navigation files for the [GPS](https://en.wikipedia.org/wiki/Global_Positioning_System) system.
+- `amte3051.22g`: Navigation Files for the [GLONASS](https://en.wikipedia.org/wiki/GLONASS) system. 
+- `amte3051.22l`: Navigation files for the [GALILEO](https://en.wikipedia.org/wiki/Galileo_(satellite_navigation)) system.
+
+The `.XXd` file needs to be converted to an observation file (`.XXo`), where XX stands for a given number (`.22d` in our example). This can be accomplished using the `crx2rnx.exe` command-line tool, which is given as part of the [RTKlib software](http://rtkexplorer.com/#). To use it, copy the `crx2rnx.exe` to the same folder as the `.XXd` files, and then type on the command line:
+
+`crx2rnx.exe amte3051.22d`
+
+A new file named `amte3051.22o` should be created. Remember to replace the name of our example file by the name of the actual file you intend to convert! The data is now ready to be used to post-process GNSS data collected in the field. 
+

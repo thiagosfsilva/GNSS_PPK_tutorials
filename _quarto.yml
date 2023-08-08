@@ -1,0 +1,23 @@
+project:
+  type: book
+
+book:
+  title: "GNSS PPK tutorials"
+  author: "Thiago Silva"
+  date: "08/08/2023"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - getting_RBMC_data.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+
+

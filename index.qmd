@@ -1,0 +1,7 @@
+# About this guide {.unnumbered}
+
+This guide is a living document documenting the protocols I use to process Global Navigation Satellite Systems (GNSS) data. As such, it is somewhat biased to my use cases: processing data acquired using either the Emlid Reach RS2+ or the DJI D-RTK2 station, in the UK, USA and Brazil. 
+
+Feel free to suggest changes or corrections, and to add base data instructions for other countries. 
+
+This e-book is created using Quarto. To learn more about Quarto books visit <https://quarto.org/docs/books>.
